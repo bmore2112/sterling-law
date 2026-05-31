@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  Sterling Law — Visual direction: Authoritative classic legal.
+  Ink-navy + bone-ivory canvas with a single restrained bronze accent; Playfair Display
+  serif over Source Sans 3 for established, premium typographic hierarchy.
+  Signature moment: a pinned practice-area list that advances on scroll while case-results
+  counters animate up. All motion is guarded behind prefers-reduced-motion.
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sterling &amp; Hale, Attorneys at Law | Trial-Tested Counsel in the Carolinas</title>
+  <meta name="description" content="Sterling &amp; Hale is a full-service law firm handling personal injury, family law, estate planning, business, criminal defense and real estate matters. Schedule a free, confidential consultation." />
+  <meta name="theme-color" content="#0B1F33" />
+  <meta property="og:title" content="Sterling &amp; Hale, Attorneys at Law" />
+  <meta property="og:description" content="Trial-tested counsel for life's most important matters. Free consultation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://picsum.photos/seed/sterlinglaw/1200/630" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230B1F33'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23B08D57' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: { DEFAULT: '#0B1F33', 700: '#10293F', 600: '#173552', 500: '#23445F' },
+            bone: { DEFAULT: '#F3EFE7', 200: '#EBE5D8', 300: '#DED5C2' },
+            bronze: { DEFAULT: '#B08D57', 600: '#9A7945', light: '#C9A876' },
+            slatey: '#5A6675'
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Source Sans 3"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          },
+          letterSpacing: { tightish: '-0.015em' },
+          maxWidth: { '8xl': '88rem' }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: "Source Sans 3", ui-sans-serif, system-ui, sans-serif; background: #F3EFE7; color: #0B1F33; }
+    .font-display { font-family: "Playfair Display", Georgia, serif; }
+
+    /* Restrained, professional photo treatment: navy duotone + soft contrast */
+    .duotone { filter: grayscale(100%) contrast(1.05) brightness(0.96); }
+    .duotone-wrap { position: relative; }
+    .duotone-wrap::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(11,31,51,0.55) 0%, rgba(11,31,51,0.30) 45%, rgba(11,31,51,0.62) 100%);
+      mix-blend-mode: multiply; pointer-events: none;
+    }
+    .rule-gold { height: 2px; width: 56px; background: #B08D57; }
+
+    :focus-visible { outline: 2px solid #B08D57; outline-offset: 3px; border-radius: 2px; }
+
+    .reveal { opacity: 0; transform: translateY(26px); }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ""; position: absolute; left: 0; bottom: -4px; height: 1.5px; width: 0;
+      background: #B08D57; transition: width .3s cubic-bezier(.16,1,.3,1);
+    }
+    .nav-link:hover::after, .nav-link:focus-visible::after { width: 100%; }
+
+    .pa-row { transition: color .35s ease, opacity .35s ease; }
+    .pa-detail { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .4s ease; }
+    .pa-detail.is-active { opacity: 1; visibility: visible; }
+
+    .card-lift { transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s ease, border-color .4s ease; }
+    .card-lift:hover { transform: translateY(-4px); }
+
+    .grain::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden antialiased">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:bg-ink focus:text-bone focus:px-4 focus:py-2 focus:rounded">Skip to main content</a>
+
+  <!-- ===== NAV ===== -->
+  <header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <div class="bg-ink text-bone/80 text-[13px] hidden md:block border-b border-white/5">
+      <div class="max-w-8xl mx-auto px-6 lg:px-10 h-9 flex items-center justify-between">
+        <p class="tracking-wide">Trial-tested counsel across North &amp; South Carolina</p>
+        <p class="tracking-wide">Free consultation &middot; No fee unless we win your injury case</p>
+      </div>
+    </div>
+    <div id="navbar" class="border-b border-transparent transition-all duration-300">
+      <div class="max-w-8xl mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between">
+        <a href="#main" class="flex items-center gap-3 group" aria-label="Sterling and Hale home">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-sm bg-ink text-bronze font-display text-xl leading-none">S</span>
+          <span class="leading-tight">
+            <span class="block font-display text-[19px] tracking-tightish text-ink">Sterling &amp; Hale</span>
+            <span class="block text-[10.5px] uppercase tracking-[0.22em] text-slatey">Attorneys at Law</span>
+          </span>
+        </a>
+        <nav class="hidden lg:flex items-center gap-9 text-[15px] font-medium text-ink/80" aria-label="Primary">
+          <a href="#practice" class="nav-link hover:text-ink">Practice Areas</a>
+          <a href="#firm" class="nav-link hover:text-ink">The Firm</a>
+          <a href="#results" class="nav-link hover:text-ink">Results</a>
+          <a href="#testimonials" class="nav-link hover:text-ink">Testimonials</a>
+        </nav>
+        <div class="flex items-center gap-3 sm:gap-5">
+          <a href="tel:+17045550182" class="hidden sm:flex items-center gap-2 text-ink font-semibold text-[15px] hover:text-bronze-600 transition-colors" aria-label="Call our office">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+            <span class="tabular-nums">(704) 555-0182</span>
+          </a>
+          <a href="#consult" class="inline-flex items-center justify-center min-h-[44px] px-4 sm:px-5 bg-bronze text-ink font-semibold text-[14.5px] tracking-wide rounded-sm hover:bg-bronze-light transition-colors duration-200">Free Consultation</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== HERO ===== -->
+    <section class="relative min-h-[100svh] flex items-center grain" aria-labelledby="hero-heading">
+      <div class="absolute inset-0 -z-10 duotone-wrap">
+        <img src="https://picsum.photos/seed/courthousecolumns/1920/1280" alt="Classical stone columns of a courthouse facade" class="h-full w-full object-cover duotone" fetchpriority="high" width="1920" height="1280" />
+      </div>
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/30"></div>
+
+      <div class="max-w-8xl mx-auto w-full px-6 lg:px-10 pt-32 pb-24">
+        <div class="max-w-3xl">
+          <div class="rule-gold mb-7"></div>
+          <h1 id="hero-heading" class="font-display text-bone leading-[1.04] tracking-tightish" style="font-size:clamp(2.5rem,5vw,5rem)">
+            Steady counsel when<br class="hidden sm:block" /> the stakes are highest.
+          </h1>
+          <p class="mt-7 text-[18px] md:text-[20px] leading-relaxed text-bone/85 max-w-xl font-light">
+            For over three decades, Sterling &amp; Hale has stood beside Carolinians through injury, family transition, and the work of protecting what they have built. Thoughtful strategy, courtroom experience, and a client always treated as a person, never a file number.
+          </p>
+          <div class="mt-10 flex flex-col sm:flex-row gap-4">
+            <a href="#consult" class="inline-flex items-center justify-center min-h-[52px] px-7 bg-bronze text-ink font-semibold text-[16px] tracking-wide rounded-sm hover:bg-bronze-light transition-colors duration-200">
+              Request a Free Consultation
+            </a>
+            <a href="tel:+17045550182" class="inline-flex items-center justify-center gap-2 min-h-[52px] px-7 border border-bone/40 text-bone font-semibold text-[16px] tracking-wide rounded-sm hover:bg-bone/10 transition-colors duration-200">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+              Call (704) 555-0182
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-0 inset-x-0 border-t border-bone/15 bg-ink/40 backdrop-blur-sm">
+        <div class="max-w-8xl mx-auto px-6 lg:px-10 py-4 flex flex-wrap items-center gap-x-10 gap-y-2 text-bone/75 text-[13.5px] tracking-wide">
+          <span>Admitted: NC &amp; SC State Bars</span>
+          <span class="hidden sm:inline text-bronze">&bull;</span>
+          <span>AV Preeminent&trade; Rated</span>
+          <span class="hidden sm:inline text-bronze">&bull;</span>
+          <span>Charlotte &middot; Raleigh</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRACTICE AREAS (BENTO) ===== -->
+    <section id="practice" class="py-24 md:py-40 bg-bone">
+      <div class="max-w-8xl mx-auto px-6 lg:px-10">
+        <div class="max-w-2xl reveal">
+          <div class="rule-gold mb-6"></div>
+          <p class="text-bronze-600 font-semibold uppercase tracking-[0.22em] text-[13px]">Practice Areas</p>
+          <h2 class="mt-4 font-display text-ink tracking-tightish leading-[1.08]" style="font-size:clamp(2rem,3.6vw,3.25rem)">
+            A full-service firm, built around the moments that matter most.
+          </h2>
+          <p class="mt-5 text-[17px] leading-relaxed text-slatey">
+            Six core disciplines, one consistent standard of representation. Whatever brings you to our door, you work directly with an attorney who knows your matter.
+          </p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-1 md:grid-cols-3 auto-rows-[minmax(0,1fr)] gap-px bg-ink/10 rounded-md overflow-hidden border border-ink/10" style="grid-auto-flow:dense">
+          <!-- Personal Injury (large) -->
+          <article class="reveal card-lift md:col-span-2 md:row-span-2 group relative bg-ink text-bone p-9 md:p-11 flex flex-col min-h-[300px]">
+            <div class="absolute inset-0 -z-0 opacity-[0.14] duotone-wrap">
+              <img src="https://picsum.photos/seed/injuryscales/900/700" alt="" aria-hidden="true" loading="lazy" class="h-full w-full object-cover duotone" width="900" height="700" />
+            </div>
+            <div class="relative flex-1 flex flex-col">
+              <span class="inline-flex h-12 w-12 items-center justify-center rounded-sm border border-bronze/50 text-bronze">
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+              </span>
+              <h3 class="mt-auto pt-10 font-display text-[28px] md:text-[32px] leading-tight">Personal Injury</h3>
+              <p class="mt-3 text-bone/80 text-[16px] leading-relaxed max-w-md">
+                Car and truck collisions, workplace and premises injuries, wrongful death. We handle insurers so you can focus on recovery. No fee unless we win your case.
+              </p>
+            </div>
+          </article>
+
+          <!-- Family Law -->
+          <article class="reveal card-lift group relative bg-bone p-8 flex flex-col min-h-[230px] hover:bg-white">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-ink/15 text-ink group-hover:border-bronze group-hover:text-bronze-600 transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <h3 class="mt-6 font-display text-[23px] text-ink leading-tight">Family Law</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-slatey">Divorce, custody, support and adoption handled with discretion and care.</p>
+          </article>
+
+          <!-- Estate Planning -->
+          <article class="reveal card-lift group relative bg-bone p-8 flex flex-col min-h-[230px] hover:bg-white">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-ink/15 text-ink group-hover:border-bronze group-hover:text-bronze-600 transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+            </span>
+            <h3 class="mt-6 font-display text-[23px] text-ink leading-tight">Estate Planning</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-slatey">Wills, trusts, powers of attorney and probate guidance for your family.</p>
+          </article>
+
+          <!-- Business / Corporate -->
+          <article class="reveal card-lift group relative bg-bone p-8 flex flex-col min-h-[230px] hover:bg-white">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-ink/15 text-ink group-hover:border-bronze group-hover:text-bronze-600 transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </span>
+            <h3 class="mt-6 font-display text-[23px] text-ink leading-tight">Business &amp; Corporate</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-slatey">Formation, contracts, disputes and counsel for closely held companies.</p>
+          </article>
+
+          <!-- Criminal Defense -->
+          <article class="reveal card-lift group relative bg-bone p-8 flex flex-col min-h-[230px] hover:bg-white">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-ink/15 text-ink group-hover:border-bronze group-hover:text-bronze-600 transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+            </span>
+            <h3 class="mt-6 font-display text-[23px] text-ink leading-tight">Criminal Defense</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-slatey">DWI, drug, and felony charges met with a vigorous, measured defense.</p>
+          </article>
+
+          <!-- Real Estate -->
+          <article class="reveal card-lift group relative bg-bone p-8 flex flex-col min-h-[230px] hover:bg-white">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-ink/15 text-ink group-hover:border-bronze group-hover:text-bronze-600 transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
+            </span>
+            <h3 class="mt-6 font-display text-[23px] text-ink leading-tight">Real Estate</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-slatey">Closings, title work, and commercial and residential transactions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT / THE FIRM ===== -->
+    <section id="firm" class="py-24 md:py-40 bg-ink text-bone relative grain overflow-hidden">
+      <div class="max-w-8xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div class="lg:col-span-6 reveal">
+          <div class="relative">
+            <div class="duotone-wrap rounded-md overflow-hidden">
+              <img src="https://picsum.photos/seed/attorneyoffice/1100/1300" alt="Attorneys conferring at a conference table in a wood-paneled office" loading="lazy" class="w-full h-[420px] sm:h-[520px] object-cover duotone" width="1100" height="1300" />
+            </div>
+            <div class="absolute -bottom-6 -right-2 sm:-right-6 bg-bronze text-ink px-7 py-6 rounded-sm shadow-xl max-w-[220px]">
+              <p class="font-display text-[40px] leading-none">1991</p>
+              <p class="mt-1 text-[13.5px] font-semibold uppercase tracking-wide">Serving the Carolinas since</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 reveal">
+          <div class="rule-gold mb-6"></div>
+          <p class="text-bronze-light font-semibold uppercase tracking-[0.22em] text-[13px]">The Firm</p>
+          <h2 class="mt-4 font-display tracking-tightish leading-[1.1]" style="font-size:clamp(2rem,3.4vw,3rem)">
+            Experienced advocates who answer their own phones.
+          </h2>
+          <p class="mt-6 text-[17px] leading-relaxed text-bone/80">
+            Sterling &amp; Hale was founded on a simple conviction: that good representation begins with listening. Our attorneys have tried cases before juries, negotiated across the table from the region's largest insurers, and counseled families through their most difficult seasons. We keep our caseload deliberate so every client receives the attention their matter deserves.
+          </p>
+          <ul class="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-5">
+            <li class="flex gap-3">
+              <svg class="h-5 w-5 flex-none text-bronze-light mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-bone/85 text-[15.5px]">Direct attorney access &mdash; no case handed off to staff</span>
+            </li>
+            <li class="flex gap-3">
+              <svg class="h-5 w-5 flex-none text-bronze-light mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-bone/85 text-[15.5px]">Board-certified specialists in injury &amp; family law</span>
+            </li>
+            <li class="flex gap-3">
+              <svg class="h-5 w-5 flex-none text-bronze-light mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-bone/85 text-[15.5px]">Clear, plain-language updates at every stage</span>
+            </li>
+            <li class="flex gap-3">
+              <svg class="h-5 w-5 flex-none text-bronze-light mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-bone/85 text-[15.5px]">Evening &amp; weekend consultations on request</span>
+            </li>
+          </ul>
+          <div class="mt-9 flex items-center gap-7 pt-7 border-t border-white/10">
+            <div>
+              <p class="font-display text-[28px] text-bronze-light leading-none">14</p>
+              <p class="text-[13px] text-bone/65 mt-1 tracking-wide">Attorneys &amp; counsel</p>
+            </div>
+            <div class="h-10 w-px bg-white/12"></div>
+            <div>
+              <p class="font-display text-[28px] text-bronze-light leading-none">2</p>
+              <p class="text-[13px] text-bone/65 mt-1 tracking-wide">Carolina offices</p>
+            </div>
+            <div class="h-10 w-px bg-white/12"></div>
+            <div>
+              <p class="font-display text-[28px] text-bronze-light leading-none">9,400+</p>
+              <p class="text-[13px] text-bone/65 mt-1 tracking-wide">Clients represented</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SIGNATURE SCROLL SECTION ===== -->
+    <section id="results" class="bg-bone" aria-label="How we work and our case results">
+      <!-- Pinned advancing practice list -->
+      <div id="pin-wrap" class="relative">
+        <div class="pin-panel min-h-[100svh] flex items-center py-20">
+          <div class="max-w-8xl mx-auto w-full px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <div class="lg:col-span-5">
+              <div class="rule-gold mb-6"></div>
+              <p class="text-bronze-600 font-semibold uppercase tracking-[0.22em] text-[13px]">How We Work</p>
+              <h2 class="mt-4 font-display text-ink tracking-tightish leading-[1.1]" style="font-size:clamp(1.9rem,3.2vw,2.9rem)">
+                A deliberate process, from first call to resolution.
+              </h2>
+              <p class="mt-5 text-[16.5px] leading-relaxed text-slatey max-w-md">
+                Every matter follows the same disciplined path. Scroll to see how we move a case forward, one considered step at a time.
+              </p>
+              <ol class="mt-10 space-y-1" aria-label="Our case process steps">
+                <li><button type="button" data-step="0" class="pa-row w-full text-left flex items-baseline gap-4 py-3 border-b border-ink/10 text-ink"><span class="font-display text-[15px] text-bronze-600 tabular-nums w-8">01</span><span class="font-display text-[22px] md:text-[26px]">Listen &amp; assess</span></button></li>
+                <li><button type="button" data-step="1" class="pa-row w-full text-left flex items-baseline gap-4 py-3 border-b border-ink/10 text-ink/35"><span class="font-display text-[15px] text-bronze-600 tabular-nums w-8">02</span><span class="font-display text-[22px] md:text-[26px]">Investigate &amp; build</span></button></li>
+                <li><button type="button" data-step="2" class="pa-row w-full text-left flex items-baseline gap-4 py-3 border-b border-ink/10 text-ink/35"><span class="font-display text-[15px] text-bronze-600 tabular-nums w-8">03</span><span class="font-display text-[22px] md:text-[26px]">Negotiate firmly</span></button></li>
+                <li><button type="button" data-step="3" class="pa-row w-full text-left flex items-baseline gap-4 py-3 text-ink/35"><span class="font-display text-[15px] text-bronze-600 tabular-nums w-8">04</span><span class="font-display text-[22px] md:text-[26px]">Try, if it serves you</span></button></li>
+              </ol>
+            </div>
+
+            <div class="lg:col-span-7">
+              <div class="relative h-[360px] sm:h-[460px] rounded-md overflow-hidden border border-ink/10 bg-ink">
+                <!-- Step detail panels -->
+                <div class="pa-detail is-active" data-detail="0">
+                  <div class="duotone-wrap h-full"><img src="https://picsum.photos/seed/consultmeeting/1200/900" alt="An attorney listening to a client across a desk" loading="lazy" class="h-full w-full object-cover duotone" width="1200" height="900" /></div>
+                  <div class="absolute bottom-0 inset-x-0 p-7 md:p-9 bg-gradient-to-t from-ink via-ink/70 to-transparent">
+                    <p class="text-bronze-light text-[13px] uppercase tracking-[0.2em] font-semibold">Step One</p>
+                    <p class="mt-2 text-bone text-[17px] leading-relaxed max-w-lg">We start with a free, confidential conversation. We learn your goals, explain your options in plain language, and tell you honestly whether we can help.</p>
+                  </div>
+                </div>
+                <div class="pa-detail" data-detail="1">
+                  <div class="duotone-wrap h-full"><img src="https://picsum.photos/seed/legalresearch/1200/900" alt="Legal files and research materials on a desk" loading="lazy" class="h-full w-full object-cover duotone" width="1200" height="900" /></div>
+                  <div class="absolute bottom-0 inset-x-0 p-7 md:p-9 bg-gradient-to-t from-ink via-ink/70 to-transparent">
+                    <p class="text-bronze-light text-[13px] uppercase tracking-[0.2em] font-semibold">Step Two</p>
+                    <p class="mt-2 text-bone text-[17px] leading-relaxed max-w-lg">We gather records, interview witnesses, and consult the right experts. A case is only as strong as the work behind it, and we leave nothing to assumption.</p>
+                  </div>
+                </div>
+                <div class="pa-detail" data-detail="2">
+                  <div class="duotone-wrap h-full"><img src="https://picsum.photos/seed/negotiationtable/1200/900" alt="Two parties negotiating across a conference table" loading="lazy" class="h-full w-full object-cover duotone" width="1200" height="900" /></div>
+                  <div class="absolute bottom-0 inset-x-0 p-7 md:p-9 bg-gradient-to-t from-ink via-ink/70 to-transparent">
+                    <p class="text-bronze-light text-[13px] uppercase tracking-[0.2em] font-semibold">Step Three</p>
+                    <p class="mt-2 text-bone text-[17px] leading-relaxed max-w-lg">Most matters resolve without trial. We negotiate from a position of preparation, and the other side knows we are ready to go the distance if needed.</p>
+                  </div>
+                </div>
+                <div class="pa-detail" data-detail="3">
+                  <div class="duotone-wrap h-full"><img src="https://picsum.photos/seed/courtroombench/1200/900" alt="An empty courtroom with judge's bench" loading="lazy" class="h-full w-full object-cover duotone" width="1200" height="900" /></div>
+                  <div class="absolute bottom-0 inset-x-0 p-7 md:p-9 bg-gradient-to-t from-ink via-ink/70 to-transparent">
+                    <p class="text-bronze-light text-[13px] uppercase tracking-[0.2em] font-semibold">Step Four</p>
+                    <p class="mt-2 text-bone text-[17px] leading-relaxed max-w-lg">When a fair resolution is not offered, we are trial lawyers first. Our courtroom record is the reason our settlement offers tend to be strong ones.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results counters -->
+      <div class="bg-ink text-bone py-24 md:py-32 relative grain">
+        <div class="max-w-8xl mx-auto px-6 lg:px-10">
+          <div class="max-w-2xl reveal">
+            <div class="rule-gold mb-6"></div>
+            <p class="text-bronze-light font-semibold uppercase tracking-[0.22em] text-[13px]">By the Numbers</p>
+            <h2 class="mt-4 font-display tracking-tightish leading-[1.1]" style="font-size:clamp(2rem,3.4vw,3rem)">A record built one client at a time.</h2>
+          </div>
+          <dl class="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 rounded-md overflow-hidden">
+            <div class="bg-ink-700 p-8 md:p-10">
+              <dd class="font-display text-bronze-light leading-none" style="font-size:clamp(2.5rem,5vw,4rem)"><span class="counter tabular-nums" data-target="34" data-suffix="">0</span></dd>
+              <dt class="mt-3 text-[14px] text-bone/70 tracking-wide">Years practicing law</dt>
+            </div>
+            <div class="bg-ink-700 p-8 md:p-10">
+              <dd class="font-display text-bronze-light leading-none" style="font-size:clamp(2.5rem,5vw,4rem)"><span class="counter tabular-nums" data-target="3200" data-suffix="+">0</span></dd>
+              <dt class="mt-3 text-[14px] text-bone/70 tracking-wide">Cases successfully resolved</dt>
+            </div>
+            <div class="bg-ink-700 p-8 md:p-10">
+              <dd class="font-display text-bronze-light leading-none" style="font-size:clamp(2.5rem,5vw,4rem)">$<span class="counter tabular-nums" data-target="180" data-suffix="M">0</span></dd>
+              <dt class="mt-3 text-[14px] text-bone/70 tracking-wide">Recovered for injury clients</dt>
+            </div>
+            <div class="bg-ink-700 p-8 md:p-10">
+              <dd class="font-display text-bronze-light leading-none" style="font-size:clamp(2.5rem,5vw,4rem)"><span class="counter tabular-nums" data-target="49" data-suffix="" data-decimals="1" data-divide="10">0</span></dd>
+              <dt class="mt-3 text-[14px] text-bone/70 tracking-wide">Average client rating</dt>
+            </div>
+          </dl>
+          <p class="mt-6 text-[13px] text-bone/55 max-w-3xl leading-relaxed">Figures reflect aggregate firm results since 1991. Prior results do not guarantee or predict a similar outcome in any future matter; each case is unique and depends on its own facts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section id="testimonials" class="py-24 md:py-40 bg-bone">
+      <div class="max-w-8xl mx-auto px-6 lg:px-10">
+        <div class="max-w-2xl reveal">
+          <div class="rule-gold mb-6"></div>
+          <p class="text-bronze-600 font-semibold uppercase tracking-[0.22em] text-[13px]">Client Voices</p>
+          <h2 class="mt-4 font-display text-ink tracking-tightish leading-[1.1]" style="font-size:clamp(2rem,3.4vw,3rem)">Trusted at the moments that defined their year.</h2>
+        </div>
+
+        <div class="mt-14 grid md:grid-cols-3 gap-6">
+          <figure class="reveal card-lift bg-white border border-ink/10 rounded-md p-8 flex flex-col">
+            <svg class="h-7 w-7 text-bronze" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 7.2A5.4 5.4 0 0 0 4 12.6V19h6v-6.4H7.2A2.4 2.4 0 0 1 9.6 10V7.2Zm9 0A5.4 5.4 0 0 0 13 12.6V19h6v-6.4h-2.8a2.4 2.4 0 0 1 2.4-2.4V7.2Z"/></svg>
+            <blockquote class="mt-5 text-[16.5px] leading-relaxed text-ink/90 flex-1">
+              &ldquo;After my accident I was overwhelmed by calls from the insurer. Sterling &amp; Hale stepped in the same week and handled everything. They were honest about timelines and never once made me feel like a number.&rdquo;
+            </blockquote>
+            <figcaption class="mt-7 pt-6 border-t border-ink/10">
+              <p class="font-display text-[18px] text-ink">Marcus Whitfield</p>
+              <p class="text-[13.5px] text-slatey mt-0.5">Personal injury &mdash; Charlotte, NC</p>
+            </figcaption>
+          </figure>
+
+          <figure class="reveal card-lift bg-white border border-ink/10 rounded-md p-8 flex flex-col">
+            <svg class="h-7 w-7 text-bronze" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 7.2A5.4 5.4 0 0 0 4 12.6V19h6v-6.4H7.2A2.4 2.4 0 0 1 9.6 10V7.2Zm9 0A5.4 5.4 0 0 0 13 12.6V19h6v-6.4h-2.8a2.4 2.4 0 0 1 2.4-2.4V7.2Z"/></svg>
+            <blockquote class="mt-5 text-[16.5px] leading-relaxed text-ink/90 flex-1">
+              &ldquo;Going through a custody dispute was the hardest thing I have done. My attorney was calm, prepared, and protected my time with my daughter without ever escalating things unnecessarily.&rdquo;
+            </blockquote>
+            <figcaption class="mt-7 pt-6 border-t border-ink/10">
+              <p class="font-display text-[18px] text-ink">Danielle Okafor</p>
+              <p class="text-[13.5px] text-slatey mt-0.5">Family law &mdash; Raleigh, NC</p>
+            </figcaption>
+          </figure>
+
+          <figure class="reveal card-lift bg-white border border-ink/10 rounded-md p-8 flex flex-col">
+            <svg class="h-7 w-7 text-bronze" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 7.2A5.4 5.4 0 0 0 4 12.6V19h6v-6.4H7.2A2.4 2.4 0 0 1 9.6 10V7.2Zm9 0A5.4 5.4 0 0 0 13 12.6V19h6v-6.4h-2.8a2.4 2.4 0 0 1 2.4-2.4V7.2Z"/></svg>
+            <blockquote class="mt-5 text-[16.5px] leading-relaxed text-ink/90 flex-1">
+              &ldquo;They drafted our estate plan and later helped us close on a commercial building. Having one firm that already knew our family and our business made both far less stressful.&rdquo;
+            </blockquote>
+            <figcaption class="mt-7 pt-6 border-t border-ink/10">
+              <p class="font-display text-[18px] text-ink">Priya &amp; Tomás Reyes</p>
+              <p class="text-[13.5px] text-slatey mt-0.5">Estate &amp; real estate &mdash; Davidson, NC</p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Trust signals -->
+        <div class="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-px bg-ink/10 border border-ink/10 rounded-md overflow-hidden reveal">
+          <div class="bg-bone p-7 text-center">
+            <svg class="h-8 w-8 mx-auto text-bronze-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <p class="mt-3 font-semibold text-ink text-[15px]">Bar-admitted</p>
+            <p class="text-[13px] text-slatey">NC &amp; SC in good standing</p>
+          </div>
+          <div class="bg-bone p-7 text-center">
+            <svg class="h-8 w-8 mx-auto text-bronze-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 22l5-3 5 3-1.21-8.11"/></svg>
+            <p class="mt-3 font-semibold text-ink text-[15px]">Recognized</p>
+            <p class="text-[13px] text-slatey">Carolina Super Lawyers</p>
+          </div>
+          <div class="bg-bone p-7 text-center">
+            <svg class="h-8 w-8 mx-auto text-bronze-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            <p class="mt-3 font-semibold text-ink text-[15px]">No fee unless we win</p>
+            <p class="text-[13px] text-slatey">On personal injury matters</p>
+          </div>
+          <div class="bg-bone p-7 text-center">
+            <svg class="h-8 w-8 mx-auto text-bronze-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/><path d="M17.8 19a8 8 0 1 0-11.6 0"/><circle cx="12" cy="12" r="10"/></svg>
+            <p class="mt-3 font-semibold text-ink text-[15px]">Free consultation</p>
+            <p class="text-[13px] text-slatey">Confidential, no obligation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA BAND ===== -->
+    <section id="consult" class="relative py-24 md:py-36 bg-ink text-bone grain overflow-hidden" aria-labelledby="cta-heading">
+      <div class="absolute inset-0 -z-10 opacity-20 duotone-wrap">
+        <img src="https://picsum.photos/seed/lawlibrary/1920/1000" alt="" aria-hidden="true" loading="lazy" class="h-full w-full object-cover duotone" width="1920" height="1000" />
+      </div>
+      <div class="max-w-8xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div>
+          <div class="rule-gold mb-6"></div>
+          <h2 id="cta-heading" class="font-display tracking-tightish leading-[1.08]" style="font-size:clamp(2.1rem,4vw,3.5rem)">Tell us what happened.<br />We'll tell you where you stand.</h2>
+          <p class="mt-6 text-[18px] leading-relaxed text-bone/80 max-w-lg">Your first consultation is free and entirely confidential. Share a few details and an attorney, not an intake bot, will follow up within one business day.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-bone/75 text-[15px]">
+            <a href="tel:+17045550182" class="flex items-center gap-2 font-semibold text-bronze-light hover:text-bone transition-colors">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+              <span class="tabular-nums">(704) 555-0182</span>
+            </a>
+            <span>Mon&ndash;Fri, 8:30am&ndash;6:00pm</span>
+          </div>
+        </div>
+
+        <form class="bg-bone text-ink rounded-md p-7 sm:p-9 shadow-2xl" novalidate aria-label="Request a free consultation">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label for="f-name" class="block text-[14px] font-semibold text-ink">Full name <span class="text-bronze-600" aria-hidden="true">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required class="mt-2 w-full min-h-[46px] px-3.5 rounded-sm border border-ink/20 bg-white text-ink placeholder-slatey/60 focus:border-bronze focus:ring-2 focus:ring-bronze/30 outline-none transition" placeholder="Jordan Avery" />
+            </div>
+            <div>
+              <label for="f-phone" class="block text-[14px] font-semibold text-ink">Phone <span class="text-bronze-600" aria-hidden="true">*</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" required class="mt-2 w-full min-h-[46px] px-3.5 rounded-sm border border-ink/20 bg-white text-ink placeholder-slatey/60 focus:border-bronze focus:ring-2 focus:ring-bronze/30 outline-none transition" placeholder="(704) 555-0000" />
+            </div>
+          </div>
+          <div class="mt-5">
+            <label for="f-email" class="block text-[14px] font-semibold text-ink">Email <span class="text-bronze-600" aria-hidden="true">*</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required class="mt-2 w-full min-h-[46px] px-3.5 rounded-sm border border-ink/20 bg-white text-ink placeholder-slatey/60 focus:border-bronze focus:ring-2 focus:ring-bronze/30 outline-none transition" placeholder="you@example.com" />
+          </div>
+          <div class="mt-5">
+            <label for="f-matter" class="block text-[14px] font-semibold text-ink">Type of matter</label>
+            <select id="f-matter" name="matter" class="mt-2 w-full min-h-[46px] px-3.5 rounded-sm border border-ink/20 bg-white text-ink focus:border-bronze focus:ring-2 focus:ring-bronze/30 outline-none transition">
+              <option>Personal injury</option>
+              <option>Family law</option>
+              <option>Estate planning</option>
+              <option>Business &amp; corporate</option>
+              <option>Criminal defense</option>
+              <option>Real estate</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="mt-5">
+            <label for="f-msg" class="block text-[14px] font-semibold text-ink">Briefly, how can we help?</label>
+            <textarea id="f-msg" name="message" rows="3" class="mt-2 w-full px-3.5 py-2.5 rounded-sm border border-ink/20 bg-white text-ink placeholder-slatey/60 focus:border-bronze focus:ring-2 focus:ring-bronze/30 outline-none transition resize-none" placeholder="A sentence or two is plenty."></textarea>
+          </div>
+          <button type="submit" class="mt-6 w-full min-h-[50px] bg-ink text-bone font-semibold text-[16px] tracking-wide rounded-sm hover:bg-ink-600 transition-colors duration-200">Request My Free Consultation</button>
+          <p id="form-note" role="status" aria-live="polite" class="mt-3 text-[13px] text-slatey text-center">Submitting does not create an attorney&ndash;client relationship.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-ink-700 text-bone/80 pt-20 pb-10 border-t border-white/10">
+    <div class="max-w-8xl mx-auto px-6 lg:px-10">
+      <div class="grid md:grid-cols-12 gap-12">
+        <div class="md:col-span-5">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-sm bg-bone text-ink font-display text-xl">S</span>
+            <span class="leading-tight">
+              <span class="block font-display text-[19px] text-bone">Sterling &amp; Hale</span>
+              <span class="block text-[10.5px] uppercase tracking-[0.22em] text-bone/50">Attorneys at Law</span>
+            </span>
+          </div>
+          <address class="not-italic mt-6 text-[15px] leading-relaxed text-bone/70">
+            <p>One Trade Center, Suite 2200</p>
+            <p>214 North Tryon Street</p>
+            <p>Charlotte, North Carolina 28202</p>
+          </address>
+          <div class="mt-5 space-y-1.5 text-[15px]">
+            <p><a href="tel:+17045550182" class="hover:text-bronze-light transition-colors tabular-nums">(704) 555-0182</a></p>
+            <p><a href="mailto:intake@sterlinghale.com" class="hover:text-bronze-light transition-colors">intake@sterlinghale.com</a></p>
+          </div>
+        </div>
+
+        <div class="md:col-span-3">
+          <h3 class="font-display text-[17px] text-bone">Practice Areas</h3>
+          <ul class="mt-5 space-y-2.5 text-[15px]">
+            <li><a href="#practice" class="hover:text-bronze-light transition-colors">Personal Injury</a></li>
+            <li><a href="#practice" class="hover:text-bronze-light transition-colors">Family Law</a></li>
+            <li><a href="#practice" class="hover:text-bronze-light transition-colors">Estate Planning</a></li>
+            <li><a href="#practice" class="hover:text-bronze-light transition-colors">Business &amp; Corporate</a></li>
+            <li><a href="#practice" class="hover:text-bronze-light transition-colors">Criminal Defense</a></li>
+            <li><a href="#practice" class="hover:text-bronze-light transition-colors">Real Estate</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-4">
+          <h3 class="font-display text-[17px] text-bone">Office Hours</h3>
+          <dl class="mt-5 text-[15px] space-y-2">
+            <div class="flex justify-between max-w-xs"><dt>Monday &ndash; Friday</dt><dd class="tabular-nums text-bone/70">8:30a &ndash; 6:00p</dd></div>
+            <div class="flex justify-between max-w-xs"><dt>Saturday</dt><dd class="text-bone/70">By appointment</dd></div>
+            <div class="flex justify-between max-w-xs"><dt>Sunday</dt><dd class="text-bone/70">Closed</dd></div>
+          </dl>
+          <div class="mt-7 flex items-center gap-3">
+            <a href="#" aria-label="Sterling and Hale on LinkedIn" class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-white/15 hover:border-bronze hover:text-bronze-light transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.71h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H9V9Z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-14 pt-8 border-t border-white/10 text-[12.5px] leading-relaxed text-bone/55 space-y-3">
+        <p><strong class="text-bone/70 font-semibold">Attorney advertising.</strong> This website is for general informational purposes only and does not constitute legal advice. Viewing or contacting us through this site does not create an attorney&ndash;client relationship, which is formed only by a signed written agreement. Prior results do not guarantee a similar outcome. Cases described are illustrative. Sterling &amp; Hale is licensed to practice in North Carolina and South Carolina.</p>
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3">
+          <p>&copy; <span id="year">2026</span> Sterling &amp; Hale, PLLC. All rights reserved.</p>
+          <nav class="flex gap-6" aria-label="Legal">
+            <a href="#" class="hover:text-bronze-light transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-bronze-light transition-colors">Terms of Use</a>
+            <a href="#" class="hover:text-bronze-light transition-colors">Disclaimer</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Form teaser handling (no backend) — friendly confirmation, no real submission
+    document.querySelector('form[aria-label="Request a free consultation"]').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const note = document.getElementById('form-note');
+      const ok = this.checkValidity();
+      if (!ok) {
+        const firstInvalid = this.querySelector(':invalid');
+        if (firstInvalid) firstInvalid.focus();
+        note.textContent = 'Please complete the required fields so we can reach you.';
+        note.classList.remove('text-slatey'); note.classList.add('text-bronze-600');
+        return;
+      }
+      note.textContent = 'Thank you. An attorney will follow up within one business day.';
+      note.classList.remove('text-bronze-600'); note.classList.add('text-ink');
+      this.reset();
+    });
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Nav surface on scroll
+    const navbar = document.getElementById('navbar');
+    const onScroll = () => {
+      if (window.scrollY > 12) {
+        navbar.classList.add('bg-bone/95', 'backdrop-blur', 'shadow-sm', 'border-ink/10');
+      } else {
+        navbar.classList.remove('bg-bone/95', 'backdrop-blur', 'shadow-sm', 'border-ink/10');
+      }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    if (!prefersReduced && window.gsap) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Dignified staggered reveals
+      gsap.utils.toArray('.reveal').forEach((el) => {
+        gsap.to(el, {
+          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 86%' }
+        });
+      });
+
+      // Signature: pinned advancing practice/process list
+      const rows = gsap.utils.toArray('.pa-row');
+      const details = gsap.utils.toArray('.pa-detail');
+      const setActive = (i) => {
+        rows.forEach((r, idx) => {
+          r.classList.toggle('text-ink', idx === i);
+          r.classList.toggle('text-ink/35', idx !== i);
+        });
+        details.forEach((d, idx) => d.classList.toggle('is-active', idx === i));
+      };
+      let current = 0;
+
+      ScrollTrigger.matchMedia({
+        '(min-width: 1024px)': function () {
+          ScrollTrigger.create({
+            trigger: '.pin-panel',
+            start: 'top top',
+            end: '+=2400',
+            pin: true,
+            scrub: 0.4,
+            onUpdate: (self) => {
+              const idx = Math.min(rows.length - 1, Math.floor(self.progress * rows.length));
+              if (idx !== current) { current = idx; setActive(idx); }
+            }
+          });
+        }
+      });
+
+      // Allow click-to-jump on the process rows for keyboard/non-scroll users
+      rows.forEach((r, i) => r.addEventListener('click', () => { current = i; setActive(i); }));
+
+      // Animated counters
+      gsap.utils.toArray('.counter').forEach((el) => {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const divide = parseFloat(el.dataset.divide || '1');
+        const obj = { val: 0 };
+        ScrollTrigger.create({
+          trigger: el, start: 'top 88%', once: true,
+          onEnter: () => gsap.to(obj, {
+            val: target, duration: 2, ease: 'power2.out',
+            onUpdate: () => {
+              const shown = (obj.val / divide);
+              el.textContent = shown.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+            }
+          })
+        });
+      });
+    } else {
+      // Reduced motion: render final counter values immediately
+      document.querySelectorAll('.counter').forEach((el) => {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const divide = parseFloat(el.dataset.divide || '1');
+        el.textContent = (target / divide).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+      });
+    }
+  </script>
+</body>
+</html>
